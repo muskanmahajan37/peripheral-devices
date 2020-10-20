@@ -5,13 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:USB_Camera"
         mc:Ignorable="d"
-        Title="MainWindow" Height="793.152" Width="1000" Background="#FF202020">
+        Title="USB-Camera" Height="793.152" Width="1000" Background="#FF202020">
     <Grid Margin="0,0,-6.4,8.8" Width="1000">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Image x:Name="VideoCapture" HorizontalAlignment="Left" Height="542" Margin="25,10,0,0" VerticalAlignment="Top" Width="950" RenderTransformOrigin="0.5,0.5"/>
-        <ComboBox x:Name="ComboBoxCameraSelection" HorizontalAlignment="Left" Height="25" Margin="30,575,0,0" VerticalAlignment="Top" Width="935" SelectionChanged="ComboBoxCameraSelection_SelectionChanged" ItemsSource="{Binding SelectableDevices}"/>
+        <Image x:Name="VideoPlayer" HorizontalAlignment="Left" Height="542" Margin="25,10,0,0" VerticalAlignment="Top" Width="950" RenderTransformOrigin="0.5,0.5"/>
+        <ComboBox x:Name="ComboBoxCameraSelection" HorizontalAlignment="Left" Height="25" Margin="30,575,0,0" VerticalAlignment="Top" Width="935" DisplayMemberPath="Name"
+                  ItemsSource="{Binding VideoDevices}"
+                  SelectedItem="{Binding CurrentDevice}" />
         <Slider x:Name="SaturationSlider" HorizontalAlignment="Left" Height="31" Margin="558,629,0,0" VerticalAlignment="Top" Width="407" ValueChanged="SaturationSlider_ValueChanged"/>
         <Label Content="Label" HorizontalAlignment="Left" Height="0" Margin="874,660,0,0" VerticalAlignment="Top" Width="91"/>
         <Label Content="Saturation" Height="45" Margin="898,0,0,67.4" VerticalAlignment="Bottom" Width="67" Foreground="White" HorizontalAlignment="Left"/>
@@ -23,7 +22,7 @@
         <Button Content="Stop Recording" HorizontalAlignment="Left" Height="45" Margin="444,703,0,0" VerticalAlignment="Top" Width="129" Click="BtnStopRecording_Click"/>
         <Button x:Name="BtnScreenshot" Content="Screenshot" HorizontalAlignment="Left" Height="45" Margin="578,703,0,0" VerticalAlignment="Top" Width="110" Click="BtnScreenshot_Click"/>
         <Button Content="Quit" HorizontalAlignment="Left" Height="45" Margin="693,703,0,0" VerticalAlignment="Top" Width="128"/>
-        <Button x:Name="BtnStart" Content="Start Camera" HorizontalAlignment="Left" Height="45" Margin="30,703,0,0" VerticalAlignment="Top" Width="125"/>
+        <Button x:Name="BtnStart" Content="Start Camera" HorizontalAlignment="Left" Margin="30,703,0,6.4" Width="125" Click="BtnStart_Click_1"/>
 
     </Grid>
 </Window>
