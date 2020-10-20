@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:USB_Camera"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="MainWindow" Height="793.152" Width="1000" Background="#FF202020">
+    <Grid Margin="0,0,-6.4,8.8" Width="1000">
+        <Image x:Name="VideoCapture" HorizontalAlignment="Left" Height="444" Margin="25,10,0,0" VerticalAlignment="Top" Width="950"/>
+        <ComboBox x:Name="ComboBoxCameraSelection" HorizontalAlignment="Left" Height="34" Margin="30,575,0,0" VerticalAlignment="Top" Width="935" SelectionChanged="ComboBoxCameraSelection_SelectionChanged"/>
+        <Slider x:Name="SaturationSlider" HorizontalAlignment="Left" Height="31" Margin="558,629,0,0" VerticalAlignment="Top" Width="407" ValueChanged="SaturationSlider_ValueChanged"/>
+        <Label Content="Label" HorizontalAlignment="Left" Height="0" Margin="874,660,0,0" VerticalAlignment="Top" Width="91"/>
+        <Label Content="Saturation" Height="45" Margin="898,0,0,67.4" VerticalAlignment="Bottom" Width="67" Foreground="White" HorizontalAlignment="Left"/>
+        <Slider x:Name="ContrastSlider" HorizontalAlignment="Left" Height="31" Margin="558,665,0,0" VerticalAlignment="Top" Width="407" ValueChanged="ContrastSlider_ValueChanged"/>
+        <Label Content="Contrast" Height="45" Margin="908,0,0,31.4" VerticalAlignment="Bottom" Width="67" Foreground="White" HorizontalAlignment="Left"/>
+        <ComboBox x:Name="ComboBoxResolution" HorizontalAlignment="Left" Height="31" Margin="30,629,0,0" VerticalAlignment="Top" Width="483"/>
+        <Button x:Name="BtnStopCamera" Content="Stop Camera" HorizontalAlignment="Left" Height="45" Margin="160,703,0,0" VerticalAlignment="Top" Width="139" Click="BtnStop_Click"/>
+        <Button x:Name="BtnRecord" Content="Start Recording" HorizontalAlignment="Left" Height="45" Margin="304,703,0,0" VerticalAlignment="Top" Width="135" Click="BtnRecord_Click"/>
+        <Button Content="Stop Recording" HorizontalAlignment="Left" Height="45" Margin="444,703,0,0" VerticalAlignment="Top" Width="129" Click="BtnStopRecording_Click"/>
+        <Button x:Name="BtnScreenshot" Content="Screenshot" HorizontalAlignment="Left" Height="45" Margin="578,703,0,0" VerticalAlignment="Top" Width="110" Click="BtnScreenshot_Click"/>
+        <Button Content="Quit" HorizontalAlignment="Left" Height="45" Margin="693,703,0,0" VerticalAlignment="Top" Width="128"/>
+        <Button x:Name="BtnStart" Content="Start Camera" HorizontalAlignment="Left" Height="45" Margin="30,703,0,0" VerticalAlignment="Top" Width="125"/>
+
     </Grid>
 </Window>
