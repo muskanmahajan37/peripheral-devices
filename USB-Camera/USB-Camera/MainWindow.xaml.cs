@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
@@ -29,6 +30,9 @@ namespace USB_Camera
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = this;
+            LoadAvailableDevices();
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -39,6 +43,42 @@ namespace USB_Camera
             {
                 var propertyEvent = new PropertyChangedEventArgs(name);
                 propertyChangedHandler(this, propertyEvent);
+            }
+        }
+        
+        private FilterInfo selectedDev;
+
+        public FilterInfo selectedDevice
+        {
+            set { selectedDev = value; this.OnPropertyChanged("SelectedCamera"); }
+            get { return selectedDev; }
+        }
+        private void LoadAvailableDevices()
+        {
+            SelectableDevices = new ObservableCollection<FilterInfo>();
+            foreach (FilterInfo i in new FilterInfoCollection(FilterCategory.VideoInputDevice)) SelectableDevices.Add(i);
+            if (SelectableDevices.Any()) MessageBox.Show("Urządzenie odnaleziono", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        
+        private IVideoSource videoSource;
+        
+        public ObservableCollection<FilterInfo> SelectableDevices
+        {
+            set;
+            get;
+        }
+
+        private void capture(object o, AForge.Video.NewFrameEventArgs arguments)
+        {
+
+        }
+
+        private void GetCameraSource()
+        {
+            if (selectedDevice != null)
+            {
+                videoSource = new VideoCaptureDevice(selectedDevice.MonikerString);
+                videoSource.NewFrame += null;
             }
         }
 
