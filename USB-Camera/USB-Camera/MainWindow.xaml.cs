@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using AForge;
 using AForge.Video;
 using AForge.Video.DirectShow;
 
@@ -21,11 +24,22 @@ namespace USB_Camera
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler propertyChangedHandler = this.PropertyChanged;
+            if(propertyChangedHandler != null)
+            {
+                var propertyEvent = new PropertyChangedEventArgs(name);
+                propertyChangedHandler(this, propertyEvent);
+            }
         }
 
         private void ComboBoxCameraSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
