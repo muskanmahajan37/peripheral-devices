@@ -17,7 +17,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using AForge;
 using AForge.Video;
 using AForge.Video.DirectShow;
 
@@ -29,22 +28,22 @@ namespace USB_Camera
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
-        public ObservableCollection<FilterInfo> VideoDevices { get; set;}
+        public ObservableCollection<FilterInfo> SelectableDevices { get; set;}
 
-        public FilterInfo CurrentDevice
+        public FilterInfo SelectedDevice
         {
-            set { _currentDevice = value; this.OnPropertyChanged("CurrentDevice"); }
-            get { return _currentDevice; }
+            set { _selectedDevice = value; this.OnPropertyChanged("CurrentDevice"); }
+            get { return _selectedDevice; }
         }
-        private FilterInfo _currentDevice;
+        private FilterInfo _selectedDevice;
 
-        private IVideoSource _videoSource;
+        private IVideoSource vSource;
 
         public MainWindow()
         {
             InitializeComponent();
             this.DataContext = this;
-            GetVideoDevices();
+            GetSelectableDevices();
             this.Closing += MainWindow_Closing;
         }
         
@@ -55,14 +54,15 @@ namespace USB_Camera
 
         private void StopCamera()
         {
-            if (_videoSource != null && _videoSource.IsRunning)
+            if (vSource != null && vSource.IsRunning)
             {
-                _videoSource.SignalToStop();
-                _videoSource.NewFrame -= new NewFrameEventHandler(video_NewFeame);
+                vSource.SignalToStop();
+                vSource.NewFrame -= new NewFrameEventHandler(streamedFrame);
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChangedEventHandler handler = this.PropertyChanged;
@@ -74,32 +74,32 @@ namespace USB_Camera
         }
 
 
-        private void GetVideoDevices()
+        private void GetSelectableDevices()
         {
-            VideoDevices = new ObservableCollection<FilterInfo>();
+            SelectableDevices = new ObservableCollection<FilterInfo>();
             foreach (FilterInfo i in new FilterInfoCollection(FilterCategory.VideoInputDevice))
             {
-                VideoDevices.Add(i);
+                SelectableDevices.Add(i);
             }
-            if (VideoDevices.Any())
+            if (SelectableDevices.Any())
             {
-                CurrentDevice = VideoDevices[0];
+                SelectedDevice = SelectableDevices[0];
             }
         }
         
         
 
-        private void video_NewFeame(object sender, AForge.Video.NewFrameEventArgs arguments)
+        private void streamedFrame(object sender, NewFrameEventArgs eventArgs)
         {
             try
             {
                 BitmapImage bitmapImage;
-                using (var bitmap = (Bitmap)arguments.Frame.Clone())
+                using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
                 {
                     bitmapImage = bitmap.ToBitmapImage();
                 }
                 bitmapImage.Freeze();
-                Dispatcher.BeginInvoke(new ThreadStart(delegate { VideoPlayer.Source = bitmapImage; }));
+                Dispatcher.BeginInvoke(new ThreadStart(delegate { VideoSource.Source = bitmapImage; }));
             }
             catch(Exception e)
             {
@@ -112,12 +112,11 @@ namespace USB_Camera
 
         private void startCamera()
         {
-            if (CurrentDevice != null)
+            if (SelectedDevice != null)
             {
-                MessageBox.Show("XD");
-                _videoSource = new VideoCaptureDevice(CurrentDevice.MonikerString);
-                _videoSource.NewFrame += null;
-                _videoSource.Start();
+                vSource = new VideoCaptureDevice(SelectedDevice.MonikerString);
+                vSource.NewFrame += streamedFrame;
+                vSource.Start();
             }
         }
 
@@ -154,7 +153,6 @@ namespace USB_Camera
 
         private void BtnStart_Click_1(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Hahahihi");
             startCamera();
         }
     }

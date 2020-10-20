@@ -6,11 +6,11 @@
         xmlns:local="clr-namespace:USB_Camera"
         mc:Ignorable="d"
         Title="USB-Camera" Height="793.152" Width="1000" Background="#FF202020">
-    <Grid Margin="0,0,-6.4,8.8" Width="1000">
-        <Image x:Name="VideoPlayer" HorizontalAlignment="Left" Height="542" Margin="25,10,0,0" VerticalAlignment="Top" Width="950" RenderTransformOrigin="0.5,0.5"/>
+    <Grid>
+        <Image x:Name="VideoSource" HorizontalAlignment="Left" Height="542" Margin="25,10,0,0" VerticalAlignment="Top" Width="950"/>
         <ComboBox x:Name="ComboBoxCameraSelection" HorizontalAlignment="Left" Height="25" Margin="30,575,0,0" VerticalAlignment="Top" Width="935" DisplayMemberPath="Name"
-                  ItemsSource="{Binding VideoDevices}"
-                  SelectedItem="{Binding CurrentDevice}" />
+                  ItemsSource="{Binding SelectableDevices}"
+                  SelectedItem="{Binding SelectedDevice}"/>
         <Slider x:Name="SaturationSlider" HorizontalAlignment="Left" Height="31" Margin="558,629,0,0" VerticalAlignment="Top" Width="407" ValueChanged="SaturationSlider_ValueChanged"/>
         <Label Content="Label" HorizontalAlignment="Left" Height="0" Margin="874,660,0,0" VerticalAlignment="Top" Width="91"/>
         <Label Content="Saturation" Height="45" Margin="898,0,0,67.4" VerticalAlignment="Bottom" Width="67" Foreground="White" HorizontalAlignment="Left"/>
