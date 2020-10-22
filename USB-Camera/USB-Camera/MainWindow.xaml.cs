@@ -59,7 +59,9 @@ namespace USB_Camera
         private bool _isMonochromatic;
         private DateTime? _firstFrameTime = null;
         BitmapImage bitmapImage;
-
+        private double brightness = 0;
+        private double saturation = 0;
+        private double contrast = 0;
 
 
         public MainWindow()
@@ -221,6 +223,24 @@ namespace USB_Camera
                             bitmapImage = isGrayscaledBitmap.ToBitmapImage();
                         }
                     }
+                    else if (contrast != 0)
+                    {
+                        ContrastCorrection filter = new ContrastCorrection((int)contrast);
+                        using (var contrastBitMap = filter.Apply(bitmap))
+                            bitmapImage = contrastBitMap.ToBitmapImage();
+                    }
+                    else if (brightness != 0)
+                    {
+                        BrightnessCorrection bfilter = new BrightnessCorrection((int)brightness);
+                        using (var brightnessBitMap = bfilter.Apply(bitmap))
+                            bitmapImage = brightnessBitMap.ToBitmapImage();
+                    }
+                    else if (saturation != 0)
+                    {
+                        SaturationCorrection bfilter = new SaturationCorrection((int)brightness);
+                        using (var saturationBitMap = bfilter.Apply(bitmap))
+                            bitmapImage = saturationBitMap.ToBitmapImage();
+                    }
                     else
                     {
                         bitmapImage = bitmap.ToBitmapImage();
@@ -252,12 +272,20 @@ namespace USB_Camera
        
         private void SaturationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-
+            saturation = SaturationSlider.Value;
+            contrast = 0;
+            brightness = 0;
+            BrightnesSlider.Value = 0;
+            ContrastSlider.Value = 0;
         }
 
         private void ContrastSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-
+            contrast = ContrastSlider.Value;
+            saturation = 0;
+            brightness = 0;
+            BrightnesSlider.Value = 0;
+            SaturationSlider.Value = 0;
         }
         
         private void BtnStop_Click(object sender, RoutedEventArgs e)
@@ -345,7 +373,11 @@ namespace USB_Camera
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-
+            brightness = BrightnesSlider.Value;
+            saturation = 0;
+            contrast = 0;
+            SaturationSlider.Value = 0;
+            ContrastSlider.Value = 0;
         }
     }
 }

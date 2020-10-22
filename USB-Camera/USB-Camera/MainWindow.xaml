@@ -34,7 +34,7 @@
         <RadioButton x:Name="Normal" Content="Normal picture" HorizontalAlignment="Left" Height="21" Margin="328,618,0,0" VerticalAlignment="Top" Width="110" Foreground="White" Checked="Normal_Checked"/>
         <RadioButton x:Name="Monochromatic" Content="Monochromatic" HorizontalAlignment="Left" Height="21" Margin="328,639,0,0" VerticalAlignment="Top" Width="110" Foreground="White" Checked="Monochromatic_Checked"/>
         <RadioButton x:Name="Gray_scale" Content="Grey scale" HorizontalAlignment="Left" Height="18" Margin="328,660,0,0" VerticalAlignment="Top" Width="92" Foreground="White" Checked="Gray_scale_Checked"/>
-        <Slider HorizontalAlignment="Left" Height="21" Margin="558,605,0,0" VerticalAlignment="Top" Width="407" ValueChanged="Slider_ValueChanged" Maximum="100" Minimum="-100"/>
+        <Slider x:Name="BrightnesSlider" HorizontalAlignment="Left" Height="21" Margin="558,605,0,0" VerticalAlignment="Top" Width="407" ValueChanged="Slider_ValueChanged" Maximum="100" Minimum="-100"/>
         <Label Content="Brightness" HorizontalAlignment="Left" Height="29" Margin="898,613,0,0" VerticalAlignment="Top" Width="67" Background="#00000000" Foreground="White"/>
         <Label Content="Select active device" HorizontalAlignment="Left" Height="25" Margin="30,595,0,0" VerticalAlignment="Top" Width="125" Foreground="White"/>
         <Label Content="Select resolution" HorizontalAlignment="Left" Height="29" Margin="30,651,0,0" VerticalAlignment="Top" Width="125" Foreground="White"/>
