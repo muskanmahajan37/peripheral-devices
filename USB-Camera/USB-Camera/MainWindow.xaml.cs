@@ -57,6 +57,8 @@ namespace USB_Camera
         private MotionDetector detector;
         private VideoFileWriter _writer;
         private bool _isRecording;
+        private bool _isGrayScaled;
+        private bool _isMonochromatic;
         private DateTime? _firstFrameTime = null;
         BitmapImage bitmapImage;
 
@@ -140,6 +142,7 @@ namespace USB_Camera
                 {
                     if (_firstFrameTime != null)
                     {
+                     
                         _writer.WriteVideoFrame(bitmap, DateTime.Now - _firstFrameTime.Value);
                     }
                     else
@@ -261,7 +264,7 @@ namespace USB_Camera
                  }
                  _firstFrameTime = null;
                  _writer = new VideoFileWriter();
-                 _writer.Open(dialog.FileName, (int)Math.Round(bitmapImage.Width, 0), (int)Math.Round(bitmapImage.Height, 0),30,VideoCodec.Default,500000);
+                 _writer.Open(dialog.FileName, (int)Math.Round(bitmapImage.Width, 0), (int)Math.Round(bitmapImage.Height, 0),20,VideoCodec.Default,5000000);
 
                  _isRecording = true;
             }
@@ -295,6 +298,33 @@ namespace USB_Camera
         private void BtnStart_Click_1(object sender, RoutedEventArgs e)
         {
             startCamera();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+        private void motionTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void Normal_Checked(object sender, RoutedEventArgs e)
+        {
+            _isGrayScaled = false;
+            _isMonochromatic = false;
+        }
+
+        private void Gray_scale_Checked(object sender, RoutedEventArgs e)
+        {
+            _isGrayScaled = true;
+
+        }
+
+        private void Monochromatic_Checked(object sender, RoutedEventArgs e)
+        {
+            _isMonochromatic = true;
         }
     }
 }
