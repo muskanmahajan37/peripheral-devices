@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Accord.Video.FFMPEG;
+using AForge.Imaging.Filters;
 using AForge.Video;
 using AForge.Video.DirectShow;
 using AForge.Vision.Motion;
@@ -27,9 +28,6 @@ using Microsoft.Win32;
 
 namespace USB_Camera
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
@@ -206,11 +204,27 @@ namespace USB_Camera
                 {
                     recordVideo(eventArgs);
                 }
-
-                
                 using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
                 {
-                    bitmapImage = bitmap.ToBitmapImage();
+                    if (_isMonochromatic)
+                    {
+                        using (var isgrayscaledBitmap = Grayscale.CommonAlgorithms.BT709.Apply(bitmap))
+                        using (var monochromaticcBitmap = new Threshold(100).Apply(isgrayscaledBitmap))
+                        {
+                            bitmapImage = monochromaticcBitmap.ToBitmapImage();
+                        }
+                    }
+                    else if (_isGrayScaled)
+                    {
+                        using (var isGrayscaledBitmap = Grayscale.CommonAlgorithms.BT709.Apply(bitmap))
+                        {
+                            bitmapImage = isGrayscaledBitmap.ToBitmapImage();
+                        }
+                    }
+                    else
+                    {
+                        bitmapImage = bitmap.ToBitmapImage();
+                    }
                 }
                 bitmapImage.Freeze();
                 Dispatcher.BeginInvoke(new ThreadStart(delegate { VideoSource.Source = bitmapImage; }));
@@ -318,13 +332,20 @@ namespace USB_Camera
 
         private void Gray_scale_Checked(object sender, RoutedEventArgs e)
         {
+            _isMonochromatic = false;
             _isGrayScaled = true;
 
         }
 
         private void Monochromatic_Checked(object sender, RoutedEventArgs e)
         {
+            _isGrayScaled = false;
             _isMonochromatic = true;
+        }
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
         }
     }
 }
